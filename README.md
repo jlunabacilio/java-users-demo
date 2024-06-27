@@ -10,7 +10,7 @@ This repository contains a Java users demo application. It showcases the impleme
 ## Getting Started
 To get started with the Java users demo, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/jluabacilio/java-users-demo.git`
+1. Clone the repository: `git clone https://github.com/jlunabacilio/java-users-demo.git`
 2. Open the project in your Visual Studio Code (suggested).
 3. Use GitHub Copilot to build UsersController.java
 3. Once created, build and run the application.
