@@ -1,19 +1,27 @@
-# java-users-demo Backend
-This repository contains a Java users demo application. It showcases the implementation of a simple users management using Java programming language.
+# REST in JAVA
 
-## Features
-- Add new users to the user management app - Available
-- View the list of users - Available
-- Edit status of existing users - To be implemented
-- Remove users - To be implemented
+This lab showcase the implementation of a simple users management using Java programming language. Main purpose is demostrate how does GitHub Copilot helps to increase speed and reduces errors when programming.
 
-## Getting Started
-To get started with the Java users demo, follow these steps:
+## Tools and versions required
+- Java 17.0.11
+- Maven 3.6.3
+- VisualStudio Code and next plugins:
+  - Extension Pack for Java
+  - GitHub Copilot (Chat)
 
-1. Clone the repository: `git clone https://github.com/jlunabacilio/java-users-demo.git`
-2. Open the project in your Visual Studio Code (suggested).
-3. Use GitHub Copilot to build UsersController.java
-3. Once created, build and run the application.
+## How to start
+1. Clone next GitHub Repository:
+
+https://github.com/jlunabacilio/java-users-demo
+
+2. Check it out the files created:
+
+| Name | Description | 
+|----------|----------|
+| src/main/java/com/demo/Users.java | Data 1 | 
+| src/main/java/com/demo/UsersRepository.java | Data 3 |
+
+3. It is required to create _UsersApplication_ and _UsersController_ to make it works.
 
 ## Tools and versions required
 - Java 17.0.11
@@ -23,17 +31,92 @@ To get started with the Java users demo, follow these steps:
   - GitHub Copilot
   - GitHub Copilot Chat
 
-## How to create UsersController.java
-Idea of UsersController.java is to be responsible for handling HTTP requests related to Users objects.
+## Creating users in UsersApplication.java
+Idea of UsersApplication.java is to inizialize using some static data when the application starts.
+
+1. Create _UsersApplication.java_ file in src/main/java/com/demo
+
+2. Add next dependencies at first level of the file.
+
+```java
+package com.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.util.List;
+import jakarta.annotation.PostConstruct;
+```
+
+3. Start adding next comments:
+
+```
+// Initializes the Spring Boot Application
+
+Inside public class UsersApplication:
+// Dependency injection of UsersRepository
+// Constructor to initialize UsersRepository
+// Main method to run the Spring Boot application
+// Method annoted with @PostConstruct to run after the bean initialization
+// Create a list of users with name, active or not
+// Saving the list of users to the repository
+// Featching all users from the repository and printing them
+```
+
+4. Ask to the GitHub Copilot Chat to explain the entire code.
+
+Full code:
+``` java
+package com.demo;
+
+import jakarta.annotation.PostConstruct;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.util.List;
+
+@SpringBootApplication
+public class UsersApplication {
+
+    private final UsersRepository usersRepository;
+
+    public UsersApplication(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(UsersApplication.class, args);
+    }
+
+    @PostConstruct
+    public void init() {
+        List<Users> users = List.of(
+            new Users("John Doe", true),
+            new Users("Jane Doe", false)
+        );
+
+        usersRepository.saveAll(users);
+        usersRepository.findAll().forEach(System.out::println);
+    }
+    
+}
+```
+
+## Creating UsersController.java
+
+Idea of _UsersController.java_ is to be responsible for handling HTTP requests related to Users objects.
 
 ### Creating UsersController.java using GitHub Copilot
-1. Create UsersController.java file in src/main/java/com/demo
+1. Create _UsersController.java_ file in `src/main/java/com/demo`
 
 2. Copy and paste next libraries:
 ```java
+package com.demo;
+
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,19 +135,105 @@ import org.springframework.web.bind.annotation.RestController;
 
 4. In public class UsersController, start typing next code line: ` private final UsersRepository repository;` and start pressing tab to see suggestions of GitHub Copilot.
 
-5. Add next line as comment: `//generate a get method with the path of /users` and tab to accept suggestiong from GitHub Copilot and fix as required.
+5. Ask to the copilot chat using next prompt: `Generate a get method with the path of /users`.
+6. Ask again for get by id, post, put and delete methods (functional code below).
 
-6. Try it also for get method using ids`//generate a get method with the path of /users/{id}` and post method to create new users`//generate a post method with the path of /users`.
+```java
+package com.demo;
+
+import java.net.URI;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/")
+@Validated
+public class UsersController {
+    private final UsersRepository repository;
+
+    public UsersController(UsersRepository repository) {
+        this.repository = repository;
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<Users>> getAllUsers() {
+        List<Users> users = repository.findAll();
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<Users> getUserById(@PathVariable Long id) {
+        Users users = repository.findById(id).orElse(null);
+        return ResponseEntity.ok(users);
+    }
+
+    @PostMapping("/users")
+    public ResponseEntity<Users> createUser(@RequestBody Users users) {
+        Users createdUsers = repository.save(users);
+        return ResponseEntity.created(URI.create("/" + createdUsers.getId())).body(createdUsers);
+    }
+}
+```
 
 ### Creating tests using GitHub Copilot
 
-1. Uncomment libraries in UsersControllerTest.java from src/test/java/com/demo
+1. Uncomment libraries in _UsersControllerTest.java_ from `src/test/java/com/demo`
 2. In `public class UsersControllerTest` start typing: `@Autowired` and press tab for the suggestions given by GitHub Copilot
-3. To get GitHub Copilot suggestions on test, type `//create the test for the POST endpoint of users controller` and start pressing tab as required.
-4. Run test directly from Visual Studio Code or running `mvn test` command.
+3. You can get multiple suggestions by clicking on `View > Command Palette > GitHub Copilot: Open Completions Panel`
+4. To get GitHub Copilot suggestions on test, ask to the Copilot Chat to  `/tests create the test for the POST endpoint of users controller`.
+5. Run test directly from Visual Studio Code or running `mvn test` command.
 
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+```java
+package com.demo;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+
+@WebMvcTest
+@AutoConfigureMockMvc
+
+public class UsersControllerTest{
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private UsersRepository repository;
+
+    // generate a test for create user method
+    @Test
+    public void testCreateUser() throws Exception{
+        Users user = new Users("John Doe", true);
+        when(repository.save(any(Users.class))).thenReturn(user);
+
+        mockMvc.perform(post("/users")
+            .content(new ObjectMapper().writeValueAsString(user))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.fullname").value("John Doe"));
+    }
+
+}
+```
 
 ## Contact
 If you have any questions or need further assistance, feel free to contact me at josea.luna@softtek.com or david.rodriguezh@softtek.com.
