@@ -137,6 +137,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 5. Ask to the copilot chat using next prompt: `Generate a get method with the path of /users`.
 6. Ask again for get by id, post, put and delete methods (functional code below).
+7. Test it building the _.jar_ file using next command: `mvn clean package` and run using: `ava -jar target/java-users-demo-1.0-SNAPSHOT.jar`
 
 ```java
 package com.demo;
