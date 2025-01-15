@@ -5,9 +5,10 @@ This lab showcase the implementation of a simple users management using Java pro
 ## Tools and versions required
 - Java 17.0.11
 - Maven 3.6.3
-- VisualStudio Code and next plugins:
+- Use Visual Studio code and next plugins:
   - Extension Pack for Java
-  - GitHub Copilot (Chat)
+  - GitHub Copilot
+  - GitHub Copilot Chat
 
 ## How to start
 1. Clone next GitHub Repository:
@@ -22,14 +23,6 @@ https://github.com/jlunabacilio/java-users-demo
 | src/main/java/com/demo/UsersRepository.java | El script define una interfaz UsersRepository que extiende JpaRepository. Esto proporciona métodos CRUD (Crear, Leer, Actualizar, Eliminar) para la entidad Users sin necesidad de implementar estos métodos manualmente. La interfaz permite interactuar con la base de datos de manera sencilla. |
 
 3. It is required to create _UsersApplication_ and _UsersController_ to make it works.
-
-## Tools and versions required
-- Java 17.0.11
-- Maven 3.6.3
-- Use Visual Studio code and next plugins:
-  - Extension Pack for Java
-  - GitHub Copilot
-  - GitHub Copilot Chat
 
 ## Creating users in UsersApplication.java
 Idea of UsersApplication.java is to inizialize using some static data when the application starts.
