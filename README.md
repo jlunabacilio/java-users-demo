@@ -18,8 +18,8 @@ https://github.com/jlunabacilio/java-users-demo
 
 | Name | Description | 
 |----------|----------|
-| src/main/java/com/demo/Users.java | Data 1 | 
-| src/main/java/com/demo/UsersRepository.java | Data 3 |
+| src/main/java/com/demo/Users.java | La clase Users funciona como una entidad de usuario en una base de datos. Utiliza JPA para mapear la clase a una tabla de base de datos. Los campos id, fullname y status representan las columnas de la tabla. Los métodos getter y setter permiten acceder y modificar estos campos. | 
+| src/main/java/com/demo/UsersRepository.java | El script define una interfaz UsersRepository que extiende JpaRepository. Esto proporciona métodos CRUD (Crear, Leer, Actualizar, Eliminar) para la entidad Users sin necesidad de implementar estos métodos manualmente. La interfaz permite interactuar con la base de datos de manera sencilla. |
 
 3. It is required to create _UsersApplication_ and _UsersController_ to make it works.
 
@@ -187,10 +187,41 @@ public class UsersController {
 ### Creating tests using GitHub Copilot
 
 1. Uncomment libraries in _UsersControllerTest.java_ from `src/test/java/com/demo`
-2. In `public class UsersControllerTest` start typing: `@Autowired` and press tab for the suggestions given by GitHub Copilot
-3. You can get multiple suggestions by clicking on `View > Command Palette > GitHub Copilot: Open Completions Panel`
-4. To get GitHub Copilot suggestions on test, ask to the Copilot Chat to  `/tests create the test for the POST endpoint of users controller`.
-5. Run test directly from Visual Studio Code or running `mvn test` command.
+Template
+```java
+package com.demo;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+
+@WebMvcTest
+@AutoConfigureMockMvc
+
+public class UsersControllerTest {
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private UsersRepository usersRepository;
+
+}
+```
+3. In `public class UsersControllerTest` start typing: `@Autowired` and press tab for the suggestions given by GitHub Copilot
+4. You can get multiple suggestions by clicking on `View > Command Palette > GitHub Copilot: Open Completions Panel`
+5. To get GitHub Copilot suggestions on test, ask to the Copilot Chat to  `/tests create the test for the POST endpoint of users controller`.
+6. Run test directly from Visual Studio Code or running `mvn test` command.
 
 ```java
 package com.demo;
