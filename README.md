@@ -22,7 +22,13 @@ https://github.com/jlunabacilio/java-users-demo
 | src/main/java/com/demo/Users.java | La clase Users funciona como una entidad de usuario en una base de datos. Utiliza JPA para mapear la clase a una tabla de base de datos. Los campos id, fullname y status representan las columnas de la tabla. Los métodos getter y setter permiten acceder y modificar estos campos. | 
 | src/main/java/com/demo/UsersRepository.java | El script define una interfaz UsersRepository que extiende JpaRepository. Esto proporciona métodos CRUD (Crear, Leer, Actualizar, Eliminar) para la entidad Users sin necesidad de implementar estos métodos manualmente. La interfaz permite interactuar con la base de datos de manera sencilla. |
 
-3. It is required to create _UsersApplication_ and _UsersController_ to make it works.
+3. Open _Users.java_ script in the code editor, open in-line chat and ask to the Copilot agent using the slash command "/explain": `/explain Explain how thte selected code works`.
+
+4. Repeat same step for _UsersRepository.java_ file
+
+5. It is required to create _UsersApplication_ and _UsersController_ to make it works.
+
+6. You can also try adding comments to your code `Add comments to the selected code`.
 
 ## Creating users in UsersApplication.java
 Idea of UsersApplication.java is to inizialize using some static data when the application starts.
@@ -130,7 +136,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 5. Ask to the copilot chat using next prompt: `Generate a get method with the path of /users`.
 6. Ask again for get by id, post, put and delete methods (functional code below).
-7. Test it building the _.jar_ file using next command: `mvn clean package` and run using: `ava -jar target/java-users-demo-1.0-SNAPSHOT.jar`
+7. Test it building the _.jar_ file using next command: `mvn clean package` and run using: `java -jar target/java-users-demo-1.0-SNAPSHOT.jar`
 
 ```java
 package com.demo;
